@@ -10,33 +10,28 @@
         <page-header-logout v-else></page-header-logout>
         <Nuxt />
         <layout-menu-footer></layout-menu-footer>
-        <comments-placeholder slot="placeholder">
-            <div style="margin: 0 auto;min-height: 100vh;display: flex;justify-content: center;align-items: center;text-align: center;">
-                <b-spinner class="mx-1" variant="light" type="grow" label="Spinning"></b-spinner>
-                <b-spinner class="mx-1" variant="danger" type="grow" label="Spinning"></b-spinner>
-                <b-spinner class="mx-1" variant="light" type="grow" label="Spinning"></b-spinner>
-                <b-spinner class="mx-1" variant="danger" type="grow" label="Spinning"></b-spinner>
-            </div>
-            <!-- <img src="https://i.pinimg.com/originals/91/ae/56/91ae5683045f6dbef16b1482bade938f.png" width="100px" alt="" srcset=""> -->
-        </comments-placeholder>
     </client-only>
 </div>
 </template>
 
 <script>
-import HeaderLogout from "~/components/header/HeaderLogout.vue";
-import HeaderLogin from "~/components/header/HeaderLogin.vue";
-import MenuFooter from "~/components/section/section-menu-footer.vue";
+import HeaderLogout from '~/components/header/HeaderLogout.vue'
+import HeaderLogin from '~/components/header/HeaderLogin.vue'
+import MenuFooter from '~/components/section/section-menu-footer.vue'
 export default {
   components: {
-    "page-header-logout": HeaderLogout,
-    "page-header-login": HeaderLogin,
-    "layout-menu-footer": MenuFooter,
+    'page-header-logout': HeaderLogout,
+    'page-header-login': HeaderLogin,
+    'layout-menu-footer': MenuFooter,
   },
   data() {
-    return {};
+    return {}
   },
-};
+  mounted() {
+    console.log('ook')
+    this.$store.dispatch('player/getPlayerDetail')
+  },
+}
 </script>
 
 <style>
@@ -50,8 +45,8 @@ export default {
 }
 
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

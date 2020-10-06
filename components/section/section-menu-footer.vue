@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <hr style="margin-bottom: 5px;">
-                <small class="text-dark" style="font-size : 10px">Copyright © 2020 MOZART All Rights Reserved <br>Supported by Lavagaming.com Version 0.1.1 </small>
+                <small class="text-dark" style="font-size : 10px">Copyright © 2020 Central All Rights Reserved <br>Supported by Lavagaming.com Version 0.1.1 </small>
             </b-card-text>
         </b-card>
     </b-modal>
@@ -95,115 +95,117 @@
 
 <script>
 export default {
-    data() {
-        return {
-            username: '',
-            password: '',
-            STEP_menu: 1,
-        }
+  data() {
+    return {
+      username: '',
+      password: '',
+      STEP_menu: 1,
+    }
+  },
+  methods: {
+    validateFn() {
+      if (this.username != '' && this.password != '') {
+        this.loginFn()
+      } else {
+        this.$toast.global.error({
+          message: 'เข้าสู่ระบบไม่สำเร็จ กรุณากรอกข้อมูลให้ครบ',
+        })
+      }
     },
-    methods: {
-        validateFn() {
-            if (this.username != '' && this.password != '') {
-                this.loginFn()
-            } else {
-                this.$toast.global.error({
-                    message: 'เข้าสู่ระบบไม่สำเร็จ กรุณากรอกข้อมูลให้ครบ'
-                });
-            }
-        },
-        lineConnectFn() {
-            alert("line connection !!")
-        },
-        registerFn() {
-            alert("register !!")
-        },
-        async loginFn() {
-            try {
-                let loginData = await this.$auth.loginWith("local", {
-                    data: {
-                        username: this.username,
-                        password: this.password
-                    }
-                })
-                if (loginData.data.success === true) {
-                    this.$toast.global.success({
-                        message: 'เข้าสู่ระบบสำเร็จ'
-                    });
-                    
-                    this.$router.push({
-                        name: "index"
-                    });
-                } else {
-                    this.$toast.global.error({
-                        message: 'ยูสเซอร์หรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจลองใหม่'
-                    });
-                }
-            } catch (error) {
-                this.$toast.global.error({
-                    message: 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจลองใหม่'
-                });
-            }
-        }
+    lineConnectFn() {
+      alert('line connection !!')
     },
-
+    registerFn() {
+      alert('register !!')
+    },
+    loginFn() {
+      this.$auth
+        .loginWith('local', {
+          data: {
+            username: this.username,
+            password: this.password,
+          },
+        })
+        .then(() => {
+          this.$store.dispatch('player/getPlayerDetail')
+          this.$router.push({
+            name: 'index',
+          })
+        })
+        .catch(({ response }) => {
+          let message = 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจลองใหม่'
+          switch (response.data.code) {
+            case 401:
+              message = 'ยูสเซอร์หรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจลองใหม่'
+              break
+            default:
+              break
+          }
+          this.$toast.global.error({ message })
+        })
+    },
+  },
 }
 </script>
 
 <style>
 .menuFooter-img {
-    max-width: 30px;
-    max-height: auto;
+  max-width: 30px;
+  max-height: auto;
 }
 
 .footerLogout {
-    width: 100%;
-    height: 60px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 9;
-    transition: all ease 0.5s;
-    -webkit-transition: all ease 0.5s;
-    -moz-transition: all ease 0.5s;
-    -ms-transition: all ease 0.5s;
-    -webkit-backdrop-filter: saturate(125%) blur(10px);
-    -moz-backdrop-filter: saturate(125%) blur(10px);
-    -ms-backdrop-filter: saturate(125%) blur(10px);
-    backdrop-filter: saturate(125%) blur(10px);
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  transition: all ease 0.5s;
+  -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -ms-transition: all ease 0.5s;
+  -webkit-backdrop-filter: saturate(125%) blur(10px);
+  -moz-backdrop-filter: saturate(125%) blur(10px);
+  -ms-backdrop-filter: saturate(125%) blur(10px);
+  backdrop-filter: saturate(125%) blur(10px);
 }
 
 .bt-footer {
-    background-image: linear-gradient(rgb(55, 62, 158), rgb(12, 12, 83), rgb(10, 20, 54));
-    border: 1px solid #000;
-    width: 50%;
-    padding: 10px 0px;
-    float: right;
-    margin-top: -20px;
+  background-image: linear-gradient(
+    rgb(55, 62, 158),
+    rgb(12, 12, 83),
+    rgb(10, 20, 54)
+  );
+  border: 1px solid #000;
+  width: 50%;
+  padding: 10px 0px;
+  float: right;
+  margin-top: -20px;
 }
 
 a.bt-txfooter {
-    color: #fff;
-    font-size: 25px;
-    font-weight: 100;
-    filter: drop-shadow(0px 1px 1px #fff);
+  color: #fff;
+  font-size: 25px;
+  font-weight: 100;
+  filter: drop-shadow(0px 1px 1px #fff);
 }
 
 .footer {
-    background: rgba(0, 0, 0, 0.67);
-    width: 100%;
-    height: 75px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 9;
-    transition: all ease 0.5s;
-    -webkit-transition: all ease 0.5s;
-    -moz-transition: all ease 0.5s;
-    -ms-transition: all ease 0.5s;
-    -webkit-backdrop-filter: saturate(125%) blur(10px);
-    -moz-backdrop-filter: saturate(125%) blur(10px);
-    -ms-backdrop-filter: saturate(125%) blur(10px);
-    backdrop-filter: saturate(125%) blur(10px);
+  background: rgba(0, 0, 0, 0.67);
+  width: 100%;
+  height: 75px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  transition: all ease 0.5s;
+  -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -ms-transition: all ease 0.5s;
+  -webkit-backdrop-filter: saturate(125%) blur(10px);
+  -moz-backdrop-filter: saturate(125%) blur(10px);
+  -ms-backdrop-filter: saturate(125%) blur(10px);
+  backdrop-filter: saturate(125%) blur(10px);
 }
 </style>

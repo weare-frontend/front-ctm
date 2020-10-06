@@ -14,24 +14,24 @@ Vue.use(Loading, {
   zIndex: 9999,
 })
 
-export default function ({ $axios, redirect }) {
-  var loading
-  $axios.onRequest((config) => {
-    if (process.client) {
-      loading = Vue.$loading.show({
-        // Optional parameters
-        container: null,
-      })
-    }
-  })
-  $axios.onError((error) => {
-    if (process.client) {
-      loading.hide()
-    }
-  })
-  $axios.onResponse((error) => {
-    if (process.client) {
-      loading.hide()
-    }
-  })
-}
+// export default function ({ $axios, redirect }) {
+//   var loading
+//   $axios.onRequest((config) => {
+//     if (process.client) {
+//       loading = Vue.$loading.show({
+//         // Optional parameters
+//         container: null,
+//       })
+//     }
+//   })
+//   $axios.onError((error) => {
+//     if (process.client) {
+//       loading.hide()
+//     }
+//   })
+//   $axios.onResponse((error) => {
+//     if (process.client) {
+//       loading.hide()
+//     }
+//   })
+// }

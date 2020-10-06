@@ -27,13 +27,13 @@
             <div class="col-md" style="padding: inherit;position: absolute; margin-left: -90px;">
                 <small class="text-white">กระเป๋าเงิน <br>
                     <b-img :src="require(`@/assets/img/bag.png`)" fluid width="20px"></b-img>
-                    {{formatToPrice($auth.user.balance)}}
+                    {{credit | currency }}
                 </small><br>
             </div>
             <div class="col-md" style="margin-right: -30px;">
                 <small class="text-white">กระเป๋าโบนัส <br>
                     <b-img :src="require(`@/assets/img/bitcoin.png`)"  fluid width="20px"></b-img>
-                    {{formatToPrice(0)}}
+                    {{$auth.user.free_credit | currency }}
                 </small>
             </div>
             <div class="col-md-2">
@@ -51,13 +51,13 @@
             <div class="col-5" style="margin-left: -165px; position: fixed; margin-top: 10px;">
                 <small class="text-white" style="font-size:11px; ">กระเป๋าเงิน <br>
                     <b-img :src="require(`@/assets/img/bag.png`)" fluid width="15px"></b-img>
-                    {{formatToPrice($auth.user.balance)}}
+                    {{credit | currency }}
                 </small><br>
             </div>
             <div class="col-5" style="margin-left: -85px; position: fixed; margin-top: 10px;">
                 <small class="text-white" style="font-size:11px;">กระเป๋าโบนัส <br>
                     <b-img :src="require(`@/assets/img/bitcoin.png`)" fluid width="15px"></b-img>
-                    {{formatToPrice(0)}}
+                    {{$auth.user.free_credit | currency }}
                 </small>
             </div>
             <div class="col-2" style="margin-left: -28px; position: fixed; margin-top: 5px;">
@@ -124,18 +124,23 @@
 export default {
   methods: {
     formatToPrice(value) {
-      return new Intl.NumberFormat().format(value);
+      return new Intl.NumberFormat().format(value)
     },
     updateMoney() {
-      this.$auth.fetchUser();
+      this.$store.dispatch('player/getPlayerDetail')
     },
   },
   computed: {
     themConfig() {
-      return this.$store.state.themeConfig.headerSection;
+      return this.$store.state.themeConfig.headerSection
+    },
+    credit() {
+      return this.$store.state.player.detail
+        ? this.$store.state.player.detail.data.credit
+        : 0
     },
   },
-};
+}
 </script>
 
 <style>

@@ -6,7 +6,7 @@
                 <br><br><br><br>
             </div>
             <div class="col-12">
-                <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png`)" alt="img-header" style="max-width: 100%;"></b-img-lazy>
+                <b-img-lazy  class="icon-intab-ani"  :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png`)" alt="img-header" style="max-width: 100%;"></b-img-lazy>
             </div>
             <div class="col-12" style="margin-bottom: 15px;" data-aos="fade-up">
                 <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png`)" fluid alt="img-header"></b-img-lazy>
@@ -19,7 +19,7 @@
                 <br><br><br><br>
             </div>
             <div class="col-12">
-                <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png`)"  alt="img-header" style="max-width: 100%;"></b-img-lazy>
+                <b-img-lazy  class="icon-intab-ani" :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png`)"  alt="img-header" style="max-width: 100%;"></b-img-lazy>
             </div>
             <div class="col-12" style="margin-bottom: 15px;" data-aos="fade-up">
                 <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png`)"  fluid alt="img-header"></b-img-lazy>
@@ -56,13 +56,35 @@
             <h5 class="text-center w-100">เข้าสู่เว็บเดิมพัน</h5>
             <i class="fas fa-times" aria-hidden="true" @click="close()"></i>
         </template>
-        <div class="text-center mb-2" v-for="(item,index) in gameArray" :key="index">
+        <!-- <div class="text-center mb-2" v-for="(item,index) in gameArray" :key="index">
             <b-card border-variant="dark" header-text-variant="white" style="background-color: #000;">
                 <b-card-text>
+                 
                     <a class="d-none" target="_blank" :ref="`launcher_${item.prefix}`"></a>
                     <span style="cursor : pointer;" @click="launcherGame(item.prefix)">
                         <b-img-lazy :src="require(`~/assets/img/IMG_LOGOGAME/${item.prefix}.png`)" style="max-width: 190px; height: 100px"></b-img-lazy>
                     </span>
+                </b-card-text>
+            </b-card>
+        </div> -->
+         <div class="text-center mb-2">
+            <b-card border-variant="dark" header-text-variant="white" style="background-color: #000;">
+                <b-card-text @click="submitGame">
+                  <form
+                    target="_blank"
+                    ref="formGame"
+                    action="https://lavagame.com/api/ext/lawa/login"
+                    class="form-playgame"
+                    method="post"
+                  >
+                    <input type="hidden" name="username" value="lava178164460" />
+                    <input type="hidden" name="password" value="Aa1234" />
+                    <input type="hidden" ref="token" name="token" value="" />
+                    <span style="cursor : pointer;">
+                        <b-img-lazy style="width: 100%;height: auto;" src="https://i.imgur.com/cvwZR7w.png" ></b-img-lazy>
+                    </span>
+                  </form>
+                    
                 </b-card-text>
             </b-card>
         </div>
@@ -76,54 +98,65 @@ export default {
     return {
       gameArray: [],
       HOST: process.env.API,
-    };
+    }
   },
   mounted: async function () {
-    this.getGames();
+    // this.getGames()
   },
   methods: {
+    async submitGame() {
+      // this.$refs.formGame.submit()
+      try {
+        await this.$axios.$post('/api/launchgame', {
+          username: 'lava178164460',
+          password: 'Aa1234',
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
     getGames: async function () {
       try {
-        const { games = [] } = await this.$axios.$get("/api/games");
-        return (this.gameArray = games);
+        const { games = [] } = await this.$axios.$get('/api/games')
+        return (this.gameArray = games)
       } catch (error) {
-        return (this.gameArray = []);
+        return (this.gameArray = [])
       }
     },
     launcherGame: async function (game) {
       try {
-        const { launcher } = await this.$axios.$post("/api/launcher", {
+        const { launcher } = await this.$axios.$post('/api/launcher', {
           game: game,
-        });
+        })
         if (this.$device.isDesktop) {
           this.$refs[`launcher_${game}`][0].setAttribute(
-            "href",
+            'href',
             launcher.desktop
-          );
-          this.$refs[`launcher_${game}`][0].click();
+          )
+          this.$refs[`launcher_${game}`][0].click()
         } else {
           this.$refs[`launcher_${game}`][0].setAttribute(
-            "href",
+            'href',
             launcher.mobile
-          );
-          this.$refs[`launcher_${game}`][0].click();
+          )
+          this.$refs[`launcher_${game}`][0].click()
         }
-        return true;
+        return true
       } catch (error) {
-        return false;
+        return false
       }
-      console.log(this.$refs[`launcher_${game}`][0]);
+      console.log(this.$refs[`launcher_${game}`][0])
     },
   },
   computed: {
     theme() {
-      console.log(this.$store.state.themeConfig.bannerSection);
-      return this.$store.state.themeConfig.bannerSection;
+      console.log(this.$store.state.themeConfig.bannerSection)
+      return this.$store.state.themeConfig.bannerSection
       // console.log(this.$store.getters["theme/bannerSection"]);
       // return this.$store.getters["theme/bannerSection"];
     },
   },
-};
+}
 </script>
 
 <style>

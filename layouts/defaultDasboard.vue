@@ -1,9 +1,6 @@
 <template>
 <div>
     <client-only>
-        <!-- <div class="snowfall">
-            <div class="snowflake" v-for="(item, i) in 10" :index="i" :key="i"><span class="small text-white">❅</span>️️</div>
-        </div> -->
         <div class="snowflakes">
             <div class="snowflake" v-for="(item, i) in 20" :index="i" :key="i">
                 ❅ 
@@ -13,39 +10,35 @@
         <page-header-logout v-else></page-header-logout>
         <Nuxt />
         <page-body></page-body>
-        <comments-placeholder slot="placeholder">
-            <div style="margin: 0 auto;min-height: 100vh;display: flex;justify-content: center;align-items: center;text-align: center;">
-                <b-spinner class="mx-1" variant="light" type="grow" label="Spinning"></b-spinner>
-                <b-spinner class="mx-1" variant="danger" type="grow" label="Spinning"></b-spinner>
-                <b-spinner class="mx-1" variant="light" type="grow" label="Spinning"></b-spinner>
-                <b-spinner class="mx-1" variant="danger" type="grow" label="Spinning"></b-spinner>
-            <!-- <img src="https://i.pinimg.com/originals/91/ae/56/91ae5683045f6dbef16b1482bade938f.png" width="100px" alt="" srcset=""> -->
-            </div>
-        </comments-placeholder>
+    
     </client-only>
 </div>
 </template>
 
 <script>
-import HeaderLogout from "~/components/header/HeaderLogout.vue";
-import HeaderLogin from "~/components/header/HeaderLogin.vue";
-import Body from "~/layouts/Body.vue";
+import HeaderLogout from '~/components/header/HeaderLogout.vue'
+import HeaderLogin from '~/components/header/HeaderLogin.vue'
+import Body from '~/layouts/Body.vue'
 export default {
   components: {
-    "page-header-logout": HeaderLogout,
-    "page-header-login": HeaderLogin,
-    "page-body": Body,
+    'page-header-logout': HeaderLogout,
+    'page-header-login': HeaderLogin,
+    'page-body': Body,
   },
   data() {
-    return {};
+    return {}
   },
-};
+  mounted() {
+    console.log('ook')
+    this.$store.dispatch('player/getPlayerDetail')
+  },
+}
 </script>
 
 <style>
 html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

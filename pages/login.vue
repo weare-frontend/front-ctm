@@ -54,106 +54,106 @@
 
 <script>
 export default {
-    layout: "login",
-    auth: 'guest',
+  layout: 'login',
+  auth: 'guest',
 
-    data() {
-        return {
-            username: '',
-            password: '',
-            STEP_menu: 1,
-        }
-    },
-    methods: {
-        validateFn() {
-            if (this.username != '' && this.password != '') {
-                this.loginFn()
-            } else {
-                this.$toast.global.error({
-                    message: 'เข้าสู่ระบบไม่สำเร็จ กรุณากรอกข้อมูลให้ครบ'
-                });
-            }
-        },
-        lineConnectFn() {
-            alert("line connection !!")
-        },
-        registerFn() {
-            alert("register !!")
-        },
-        async loginFn() {
-            try {
-                let loginData = await this.$auth.loginWith("local", {
-                    data: {
-                        username: this.username,
-                        password: this.password
-                    }
-                })
-                if (loginData.data.success === true) {
-                    this.$toast.global.success({
-                        message: 'เข้าสู่ระบบสำเร็จ'
-                    });
-                    this.$router.push({
-                        name: "index"
-                    });
-                } else {
-                    this.$toast.global.error({
-                        message: 'ยูสเซอร์หรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจลองใหม่'
-                    });
-                }
-            } catch (error) {
-                this.$toast.global.error({
-                    message: 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจลองใหม่'
-                });
-            }
-        }
+  data() {
+    return {
+      username: '',
+      password: '',
+      STEP_menu: 1,
     }
+  },
+  methods: {
+    validateFn() {
+      if (this.username != '' && this.password != '') {
+        this.loginFn()
+      } else {
+        this.$toast.global.error({
+          message: 'เข้าสู่ระบบไม่สำเร็จ กรุณากรอกข้อมูลให้ครบ',
+        })
+      }
+    },
+    lineConnectFn() {
+      alert('line connection !!')
+    },
+    registerFn() {
+      alert('register !!')
+    },
+    loginFn() {
+      this.$auth
+        .loginWith('local', {
+          data: {
+            username: this.username,
+            password: this.password,
+          },
+        })
+        .then(() => {
+          this.$store.dispatch('player/getPlayerDetail')
+          this.$router.push({
+            name: 'index',
+          })
+        })
+        .catch(({ response }) => {
+          let message = 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจลองใหม่'
+          switch (response.data.code) {
+            case 401:
+              message = 'ยูสเซอร์หรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจลองใหม่'
+              break
+            default:
+              break
+          }
+          this.$toast.global.error({ message })
+        })
+    },
+  },
 }
 </script>
 
 <style>
 .login {
-    margin: 0 auto;
-    min-height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  margin: 0 auto;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .login .card {
-    background-color: #ffffff8c;
+  background-color: #ffffff8c;
 }
 
 .headerLogin {
-    display: block;
+  display: block;
 }
 
 .footerLogin {
-    display: block;
-    background: rgba(0, 0, 0, 0.46);
-    width: 100%;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 9;
-    transition: all ease 0.5s;
-    -webkit-transition: all ease 0.5s;
-    -moz-transition: all ease 0.5s;
-    -ms-transition: all ease 0.5s;
-    -webkit-backdrop-filter: saturate(125%) blur(10px);
-    -moz-backdrop-filter: saturate(125%) blur(10px);
-    -ms-backdrop-filter: saturate(125%) blur(10px);
-    backdrop-filter: saturate(125%) blur(10px);
+  display: block;
+  background: rgba(0, 0, 0, 0.46);
+  width: 100%;
+  height: auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  transition: all ease 0.5s;
+  -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -ms-transition: all ease 0.5s;
+  -webkit-backdrop-filter: saturate(125%) blur(10px);
+  -moz-backdrop-filter: saturate(125%) blur(10px);
+  -ms-backdrop-filter: saturate(125%) blur(10px);
+  backdrop-filter: saturate(125%) blur(10px);
 }
 
 @media only screen and (max-height: 420px) {
-    .footerLogin {
-        display: none;
-    }
+  .footerLogin {
+    display: none;
+  }
 
-    .headerLogin {
-        display: none;
-    }
+  .headerLogin {
+    display: none;
+  }
 }
 </style>

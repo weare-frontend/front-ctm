@@ -72,6 +72,9 @@ module.exports = {
       src: '~/plugins/aos.js',
       ssr: false,
     },
+    {
+      src: '~/plugins/filters.js',
+    },
   ],
   /*
    ** Auto import components
@@ -114,9 +117,17 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/api/login', method: 'post', propertyName: 'token' },
+          login: {
+            url: '/api/players-auth',
+            method: 'post',
+            propertyName: 'accessToken',
+          },
           logout: { url: '/api/logout', method: 'get' },
-          user: { url: '/api/user', method: 'get', propertyName: 'user' },
+          user: {
+            url: '/api/players',
+            method: 'get',
+            propertyName: '',
+          },
         },
         tokenRequired: true,
         tokenType: 'Bearer',

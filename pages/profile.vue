@@ -29,31 +29,39 @@
                     </b-input-group>
                 </div> -->
             </div>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" v-if="$auth.user">
                 <div class="container">
                     <div class="col-10 col-md-12">
                         <div class="row text-white" style="background:rgba(0,0,0,0.2);border-radius: 6px; justify-content: center;">
-                            <div class="col-md-6 text-left" style="margin-top: 5px;">
-                                <small>ชื่อบัญชี :</small>
-                                <small>{{$auth.user.firstName}}</small>
-                                <small>{{$auth.user.lastName}}</small>
+                            <div class="col-md-1 text-center">
+                              <img :src="require(`@/assets/img/IMG_LOGOBANK/${$auth.user.player_bank.bank_short_name}.png`)" style="max-width:40px" alt="" srcset="" class="img-fluid rounded">
                             </div>
                             <div class="col-md-5 text-left">
-                                <small>ธนาคาร :</small>
-                                <small>{{$auth.user.bank.description}}</small>
-                            </div>
-                            <div class="col-md-6 text-left">
-                                <small>เลขที่บัญชี :</small>
-                                <small>{{$auth.user.accountNumber}}</small>
-                            </div>
-                            <!-- <div class="col-md-5 text-left">
-                                <small>รหัส Pincode :</small>
-                                <small>{{$auth.user.pincode}}</small>
-                            </div> -->
-                            <div class="col-md-6" v-if="$auth.user.refer_code">
-                                <small>รหัสผู้เชิญชวน :</small>
+                              <div>
+                                  <small><b>ชื่อบัญชี :</b></small>
+                                  <small>{{$auth.user.detail.fname}}</small>
+                                  <small>{{$auth.user.detail.lname}}</small>
+                              </div>
+                              <div>
+                                <small><b>เลขที่บัญชี :</b></small>
+                                <small>{{$auth.user.player_bank.bank_account}}</small>
+                              </div>
+                              <div v-if="$auth.user.refer_code">
+                                <small><b>รหัสผู้เชิญชวน :</b></small>
                                 <small>{{$auth.user.refer_code}}</small>
                             </div>
+                            </div>
+                            <div class="col-md-6 text-left">
+                              <div>
+                                <small><b>ธนาคาร :</b></small>
+                                <small>{{$auth.user.player_bank.bank_name}}</small>
+                              </div>
+                              <div>
+                                <small><b>รหัส Pincode :</b></small>
+                                <small>{{$auth.user.pincode}}</small>
+                              </div>
+                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -68,7 +76,7 @@
                             <div class="row">
                                 <div class="col-12 mb-0">
                                     <div class="form-group">
-                                        <input type="text" class="form-control text-center" ref="password" placeholder="กรุณากรอกรหัสผ่านใหม่" />
+                                        <input type="text" class="form-control text-center" v-model="password" ref="password" placeholder="กรุณากรอกรหัสผ่านใหม่" oninput="this.value = this.value.replace(/[^0-9a-zA-Z]/g, '').replace(/(\..*)\./g, '$1');"/>
                                         <div class="text-left">
                                             <small class="text-danger">
                                                 หมายเหตุ: รหัสผ่านต้องมีตั้งแต่ 6-12 ตัวขึ้นไป และมีภาษาอังกฤษ พิมพ์เล็กและใหญ่ เช่น Abc123
@@ -98,10 +106,10 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group float-label">
-                                        <input type="password" ref="pincodeOne" class="form-control text-center" maxlength="4" placeholder="กรุณากรอก PIN 4 หลัก" />
+                                        <input type="password" ref="pincodeOne" class="form-control text-center" maxlength="4" placeholder="กรุณากรอก PIN 4 หลัก" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"/>
                                     </div>
                                     <div class="form-group float-label">
-                                        <input type="password" ref="pincodeTwo" class="form-control text-center" maxlength="4" placeholder="กรุณายืนยัน PIN 4 หลัก" />
+                                        <input type="password" ref="pincodeTwo" class="form-control text-center" maxlength="4" placeholder="กรุณายืนยัน PIN 4 หลัก" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"/>
                                         <div class="text-left">
                                             <small class="text-danger">หมายเหตุ: PIN 4 หลัก ใช้สำหรับล็อคอินเข้าสู่ระบบ</small>
                                         </div>
@@ -130,234 +138,238 @@
 
 <script>
 export default {
-    layout: 'defaultPage',
-    head() {
-        return {
-            title: "Profile"
-        };
-    },
-    methods: {
-        fetchUser: function () {
-            const loader = this.$loading.show({
-                container: this.$refs.formInfoUser
-            });
-            this.isSpin = true;
-            this.$auth
-                .fetchUser()
-                .then(res => {
-                    this.$toast.global.success({
-                        message: "อัพเดทข้อมูลเรียบร้อย"
-                    });
-                    this.isSpin = false;
-                    loader.hide();
-                })
-                .catch(e => {
-                    this.isSpin = false;
-                    loader.hide();
-                });
-        },
-        resetPassword: async function () {
-            this.$refs["modal-password"].hide();
-            if (
-                !!this.$refs.password.value.match(/[a-z]/g) &&
-                !!this.$refs.password.value.match(/[A-Z]/g) &&
-                this.$refs.password.value.length >= 6
-            ) {
-                const loader = this.$loading.show({
-                    "is-full-page": true
-                });
-                const res = await this.$axios.$post("/api/reset-password", {
-                    password: this.$refs.password.value
-                });
-                this.$toast.global.success({
-                    message: "อัพเดทรหัสเข้าเกมผ่านสำเร็จ"
-                });
-                this.$refs.password.value = "";
-                this.$auth.fetchUser();
-                loader.hide();
-            } else {
-                this.$toast.global.error({
-                    message: "รหัสผ่านต้องมีตั้งแต่ 6-12 ตัว และมีภาษาอังกฤษ พิมพ์เล็กและใหญ่ เช่น Abc123"
-                });
-                this.$refs.password.focus();
-            }
-        },
-        resetPincode: async function () {
-            if (this.$refs.pincodeOne.value.length != 4) {
-                this.$toast.global.error({
-                    message: "ห้ามมีช่องว่างและเป็นตัวเลข 4 หลักเท่านั้น"
-                });
-                this.$refs.pincodeOne.focus();
-                return;
-            }
-
-            if (!this.$refs.pincodeOne.value.match(/^[0-9]+$/)) {
-                this.$toast.global.error({
-                    message: "ต้องเป็นตัวเลขเท่านั้น"
-                });
-                this.$refs.pincodeOne.focus();
-                return;
-            }
-
-            if (this.$refs.pincodeTwo.value.length != 4) {
-                this.$toast.global.error({
-                    message: "ห้ามว่างและต้องมี 4 หลักเท่านั้น"
-                });
-                this.$refs.pincodeTwo.focus();
-                return;
-            }
-
-            if (!this.$refs.pincodeTwo.value.match(/^[0-9]+$/)) {
-                this.$toast.global.error({
-                    message: "ต้องเป็นตัวเลขเท่านั้น"
-                });
-                this.$refs.pincodeTwo.focus();
-                return;
-            }
-
-            if (this.$refs.pincodeOne.value != this.$refs.pincodeTwo.value) {
-                this.$toast.global.error({
-                    message: "Pincode ไม่ตรงกัน"
-                });
-                this.$refs.pincodeTwo.focus();
-                return;
-            }
-
-            const loader = this.$loading.show({
-                "is-full-page": true
-            });
-            const { success } = await this.$axios.$post("/api/change-pincode", {
-                pincode: this.$refs.pincodeOne.value
-            });
-
-            if (success) {
-                this.$toast.global.success({
-                    message: "อัพเดท Pincode สำเร็จเรียบร้อย"
-                });
-            } else {
-                this.$toast.global.error({
-                    message: "กรุณาตรวจสอบข้อมูล"
-                });
-            }
-            this.$refs.pincodeOne.value = "";
-            this.$refs.pincodeTwo.value = "";
-            this.$auth.fetchUser();
-            loader.hide();
-        },
-        copyAffiliate: function (target) {
-            this.$refs[target].select();
-            document.execCommand("copy");
-            this.$toast.global.success({
-                message: "คัดลอกลงคลิปบอร์ดแล้ว"
-            });
-        },
-        copyUser: function (target) {
-            document.getElementById("cbc1").style.display = "none";
-            document.getElementById("cbc2").style.display = "block";
-            setTimeout(function () {
-                document.getElementById("cbc2").style.display = "none";
-                document.getElementById("cbc1").style.display = "block";
-            }, 2400);
-            this.$refs[target].select();
-            document.execCommand("copy");
-            this.$toast.global.success({
-                message: "คัดลอกลงคลิปบอร์ดแล้ว"
-            });
-        }
+  layout: 'defaultPage',
+  head() {
+    return {
+      title: 'Profile',
     }
-};
+  },
+  data: () => ({
+    isLoading: null,
+    password: '',
+  }),
+
+  methods: {
+    resetPassword: async function () {
+      this.$refs['modal-password'].hide()
+      if (
+        !!this.$refs.password.value.match(/[a-z]/g) &&
+        !!this.$refs.password.value.match(/[A-Z]/g) &&
+        this.$refs.password.value.length >= 6
+      ) {
+        this.isLoading = this.$loading.show({
+          'is-full-page': true,
+        })
+        this.$axios
+          .$patch('/api/players-change-password', {
+            password: this.$refs.password.value,
+          })
+          .then(() => {
+            this.$toast.global.success({
+              message: 'อัพเดทรหัสเข้าเกมผ่านสำเร็จ',
+            })
+            this.password = ''
+            this.$bvModal.hide('modal-password')
+            this.$auth.fetchUser()
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$toast.global.error({
+              message: 'กรุณาตรวจสอบข้อมูล',
+            })
+          })
+          .finally(() => {
+            this.isLoading.hide()
+          })
+      } else {
+        this.$toast.global.error({
+          message:
+            'รหัสผ่านต้องมีตั้งแต่ 6-12 ตัว และมีภาษาอังกฤษ พิมพ์เล็กและใหญ่ เช่น Abc123',
+        })
+        this.$refs.password.focus()
+      }
+    },
+    resetPincode: async function () {
+      if (this.$refs.pincodeOne.value.length != 4) {
+        this.$toast.global.error({
+          message: 'ห้ามมีช่องว่างและเป็นตัวเลข 4 หลักเท่านั้น',
+        })
+        this.$refs.pincodeOne.focus()
+        return
+      }
+
+      if (!this.$refs.pincodeOne.value.match(/^[0-9]+$/)) {
+        this.$toast.global.error({
+          message: 'ต้องเป็นตัวเลขเท่านั้น',
+        })
+        this.$refs.pincodeOne.focus()
+        return
+      }
+
+      if (this.$refs.pincodeTwo.value.length != 4) {
+        this.$toast.global.error({
+          message: 'ห้ามว่างและต้องมี 4 หลักเท่านั้น',
+        })
+        this.$refs.pincodeTwo.focus()
+        return
+      }
+
+      if (!this.$refs.pincodeTwo.value.match(/^[0-9]+$/)) {
+        this.$toast.global.error({
+          message: 'ต้องเป็นตัวเลขเท่านั้น',
+        })
+        this.$refs.pincodeTwo.focus()
+        return
+      }
+
+      if (this.$refs.pincodeOne.value != this.$refs.pincodeTwo.value) {
+        this.$toast.global.error({
+          message: 'Pincode ไม่ตรงกัน',
+        })
+        this.$refs.pincodeTwo.focus()
+        return
+      }
+
+      this.isLoading = this.$loading.show({
+        'is-full-page': true,
+      })
+
+      this.$axios
+        .$patch('/api/players-change-password', {
+          pincode: this.$refs.pincodeOne.value,
+        })
+        .then(() => {
+          this.$toast.global.success({
+            message: 'อัพเดท Pincode สำเร็จเรียบร้อย',
+          })
+          this.$refs.pincodeOne.value = ''
+          this.$refs.pincodeTwo.value = ''
+          this.$auth.fetchUser()
+          this.$bvModal.hide('modal-pin')
+        })
+        .catch(() => {
+          this.$toast.global.error({
+            message: 'กรุณาตรวจสอบข้อมูล',
+          })
+        })
+        .finally(() => {
+          this.isLoading.hide()
+        })
+    },
+    copyAffiliate: function (target) {
+      this.$refs[target].select()
+      document.execCommand('copy')
+      this.$toast.global.success({
+        message: 'คัดลอกลงคลิปบอร์ดแล้ว',
+      })
+    },
+    copyUser: function (target) {
+      document.getElementById('cbc1').style.display = 'none'
+      document.getElementById('cbc2').style.display = 'block'
+      setTimeout(function () {
+        document.getElementById('cbc2').style.display = 'none'
+        document.getElementById('cbc1').style.display = 'block'
+      }, 2400)
+      this.$refs[target].select()
+      document.execCommand('copy')
+      this.$toast.global.success({
+        message: 'คัดลอกลงคลิปบอร์ดแล้ว',
+      })
+    },
+  },
+}
 </script>
 
 <style>
 .tooltip {
-    font-family: "Kanit", sans-serif;
+  font-family: 'Kanit', sans-serif;
 }
 
 .tooltip-inner {
-    max-width: 350px;
-    padding: 0.25rem 0.5rem;
-    color: #fff;
-    text-align: center;
-    background-color: #000;
-    border-radius: 0.25rem;
+  max-width: 350px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 0.25rem;
 }
 
 .onoffswitch {
-    position: relative;
-    width: 90px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+  position: relative;
+  width: 90px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .onoffswitch-checkbox {
-    display: none;
+  display: none;
 }
 
 .onoffswitch-label {
-    display: block;
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid #d1d1d1;
-    border-radius: 20px;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #d1d1d1;
+  border-radius: 20px;
 }
 
 .onoffswitch-inner {
-    display: block;
-    width: 200%;
-    margin-left: -100%;
-    transition: margin 0.3s ease-in 0s;
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
 }
 
 .onoffswitch-inner:before,
 .onoffswitch-inner:after {
-    display: block;
-    float: left;
-    width: 50%;
-    height: 30px;
-    padding: 0;
-    line-height: 30px;
-    font-size: 14px;
-    color: white;
-    font-family: Trebuchet, Arial, sans-serif;
-    font-weight: bold;
-    box-sizing: border-box;
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 14px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
 }
 
 .onoffswitch-inner:before {
-    content: "รับโปร";
-    padding-left: 0px;
-    background-color: #34c251;
-    color: #ffffff;
+  content: 'รับโปร';
+  padding-left: 0px;
+  background-color: #34c251;
+  color: #ffffff;
 }
 
 .onoffswitch-inner:after {
-    content: "ไม่รับโปร";
-    padding-right: 15px;
-    background-color: #eeeeee;
-    color: #ec1415;
-    text-align: right;
+  content: 'ไม่รับโปร';
+  padding-right: 15px;
+  background-color: #eeeeee;
+  color: #ec1415;
+  text-align: right;
 }
 
 .onoffswitch-switch {
-    display: block;
-    width: 15px;
-    margin: 7.5px;
-    background: #ffffff;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 68px;
-    border: 2px solid #d1d1d1;
-    border-radius: 20px;
-    transition: all 0.3s ease-in 0s;
+  display: block;
+  width: 15px;
+  margin: 7.5px;
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 68px;
+  border: 2px solid #d1d1d1;
+  border-radius: 20px;
+  transition: all 0.3s ease-in 0s;
 }
 
-.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
 }
 
-.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
-    right: 0px;
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px;
 }
 </style>
