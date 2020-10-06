@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="text-center text-white manu-button" v-if="!this.$auth.user">
-        <h1 class="py-3" style="font-weight: 300;">ครบในเว็บเดียว</h1>
+        <h1 class="py-3" style="font-weight: 300;">ครบจบในเว็บเดียว</h1>
         <span v-b-modal.modal-login style="cursor : pointer;">
             <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/BTN_LOGIN.png`)" style="max-width: 190px;"></b-img-lazy>
         </span>
@@ -38,7 +38,7 @@
     </div>
     <div class="text-center text-white" v-else>
         <div class="desktop btn-start">
-            <h1 class="py-3 text-start" style="font-weight: 300; margin-bottom: -10px;">ครบในเว็บเดียว</h1>
+            <h1 class="py-3 text-start" style="font-weight: 300; margin-bottom: -10px;">ครบจบในเว็บเดียว</h1>
             <span style="cursor: pointer;" v-b-modal.modal-launch>
                 <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/BTN_START.png`)" class="img_start"></b-img-lazy>
             </span>
