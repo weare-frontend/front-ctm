@@ -1,21 +1,22 @@
 <template>
-<div>
+  <div>
+    <setting />
     <client-only>
-        <div class="snowflakes">
-            <div class="snowflake" v-for="(item, i) in 20" :index="i" :key="i">
-                ❅ 
-            </div>
+      <div class="snowflakes">
+        <div class="snowflake" v-for="(item, i) in 20" :index="i" :key="i">
+          ❅
         </div>
-        <page-header-login v-if="$auth.user"></page-header-login>
-        <page-header-logout v-else></page-header-logout>
-        <Nuxt />
-        <page-body></page-body>
-    
+      </div>
+      <page-header-login v-if="$auth.user"></page-header-login>
+      <page-header-logout v-else></page-header-logout>
+      <Nuxt />
+      <page-body></page-body>
     </client-only>
-</div>
+  </div>
 </template>
 
 <script>
+import Setting from '~/components/section/setting.vue'
 import HeaderLogout from '~/components/header/HeaderLogout.vue'
 import HeaderLogin from '~/components/header/HeaderLogin.vue'
 import Body from '~/layouts/Body.vue'
@@ -24,13 +25,15 @@ export default {
     'page-header-logout': HeaderLogout,
     'page-header-login': HeaderLogin,
     'page-body': Body,
+    Setting,
   },
   data() {
     return {}
   },
   mounted() {
-    console.log('ook')
-    this.$store.dispatch('player/getPlayerDetail')
+    if (this.$auth.user) {
+      this.$store.dispatch('player/getPlayerDetail')
+    }
   },
 }
 </script>

@@ -122,7 +122,7 @@ module.exports = {
             method: 'post',
             propertyName: 'accessToken',
           },
-          logout: { url: '/api/logout', method: 'get' },
+          logout: false,
           user: {
             url: '/api/players',
             method: 'get',

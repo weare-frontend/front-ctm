@@ -1,245 +1,239 @@
 <template>
 <div>
     <Nuxt />
-    <!-- <div class="loader" v-if="isLoading"></div> -->
 </div>
 </template>
 
 <script>
 export default {
-  layout: "defaultDasboard",
+  layout: 'defaultDasboard',
   data() {
     return {
       isLoading: true,
-    };
-  },
-  created() {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 3000);
+    }
   },
   asyncData({ store }) {
     let themeConfig = {
       global: {
-        themeColor: " #181447",
-        backgroundColor: " #181447",
+        themeColor: ' #181447',
+        backgroundColor: ' #181447',
       },
       headerSection: {
         brandLogo: {
-          description: "Lucabetth.com ",
+          description: 'Lucabetth.com ',
           url:
-            "http://localhost:3000/_nuxt/assets/img/SECTION_HEADER_LOGO/IMG-LOGO-5.png",
+            'http://localhost:3000/_nuxt/assets/img/SECTION_HEADER_LOGO/IMG-LOGO-5.png',
         },
         moneyBagIcon: {
-          description: "",
-          url: "http://localhost:3000/_nuxt/assets/img/bag.png",
+          description: '',
+          url: 'http://localhost:3000/_nuxt/assets/img/bag.png',
         },
         bitcoinIcon: {
-          description: "",
-          url: "http://localhost:3000/_nuxt/assets/img/bitcoin.png",
+          description: '',
+          url: 'http://localhost:3000/_nuxt/assets/img/bitcoin.png',
         },
       },
       sidebarSection: {},
       bannerSection: {
         background: {
           mobile: {
-            description: "Banner background MOBILE",
-            url: require("~/assets/img/SECTION_BANNER/BG_SECTION-1-MOBILE.jpg"),
+            description: 'Banner background MOBILE',
+            url: require('~/assets/img/SECTION_BANNER/BG_SECTION-1-MOBILE.jpg'),
             // url: 'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BG_SECTION-1-MOBILE.jpg',
           },
           desktop: {
-            description: "Banner background DESKTOP",
-            url: require("~/assets/img/SECTION_BANNER/BG_SECTION-1-DESKTOP.jpg"),
+            description: 'Banner background DESKTOP',
+            url: require('~/assets/img/SECTION_BANNER/BG_SECTION-1-DESKTOP.jpg'),
             // url: 'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BG_SECTION-1-DESKTOP.jpg',
           },
         },
         image: {
           mobile: {
-            description: "Banner image MOBILE",
-            url: require("~/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png"),
+            description: 'Banner image MOBILE',
+            url: require('~/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png'),
             // url: 'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png',
           },
           desktop: {
-            description: "Banner image DESKTOP",
-            url: require("~/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png"),
+            description: 'Banner image DESKTOP',
+            url: require('~/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png'),
             // url: 'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png',
           },
         },
         categoryImage: {
-          description: "",
-          url: require("~/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png"),
+          description: '',
+          url: require('~/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png'),
           // url: 'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png',
         },
         startBtn: {
-          description: "",
+          description: '',
           url:
-            "http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BTN_START.png",
+            'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BTN_START.png',
         },
         registerBtn: {
-          description: "",
+          description: '',
           url:
-            "http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BTN_REGISTER.png",
+            'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BTN_REGISTER.png',
         },
         loginBtn: {
-          description: "",
+          description: '',
           url:
-            "http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BTN_LOGIN.png",
+            'http://localhost:3000/_nuxt/assets/img/SECTION_BANNER/BTN_LOGIN.png',
         },
       },
       promotionSection: {
         images: [
           {
-            description: "Promotion 1",
+            description: 'Promotion 1',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_SLIDE/IMG_SLIDE-1.png",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_SLIDE/IMG_SLIDE-1.png',
           },
           {
-            description: "Promotion 2",
+            description: 'Promotion 2',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_SLIDE/IMG_SLIDE-2.png",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_SLIDE/IMG_SLIDE-2.png',
           },
           {
-            description: "Promotion 4",
+            description: 'Promotion 4',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_SLIDE/IMG_SLIDE-3.png",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_SLIDE/IMG_SLIDE-3.png',
           },
         ],
       },
       tabMenuSection: {
         menu: [
           {
-            label: "หน้าหลัก",
-            icon: { description: "", url: "" },
+            label: 'หน้าหลัก',
+            icon: { description: '', url: '' },
             contents: [
               {
-                title: "",
-                description: "",
+                title: '',
+                description: '',
                 image: {
-                  description: "HOME",
+                  description: 'HOME',
                   url:
-                    "http://localhost:3000/_nuxt/assets/img/SECTION_TAB/HOME.png",
+                    'http://localhost:3000/_nuxt/assets/img/SECTION_TAB/HOME.png',
                 },
               },
             ],
           },
           {
-            label: "เกมส์",
+            label: 'เกมส์',
             icon: {
-              description: "",
+              description: '',
               url:
-                "http://localhost:3000/_nuxt/assets/img/SECTION_TAB/GAME.png",
+                'http://localhost:3000/_nuxt/assets/img/SECTION_TAB/GAME.png',
             },
-            contents: [{ description: "", url: "" }],
+            contents: [{ description: '', url: '' }],
           },
           {
-            label: "โปรโมชั่น",
+            label: 'โปรโมชั่น',
             icon: {
-              description: "",
+              description: '',
               url:
-                "http://localhost:3000/_nuxt/assets/img/SECTION_TAB/PROMOTION.png",
+                'http://localhost:3000/_nuxt/assets/img/SECTION_TAB/PROMOTION.png',
             },
-            contents: [{ description: "", url: "" }],
+            contents: [{ description: '', url: '' }],
           },
           {
-            label: "บทความ",
+            label: 'บทความ',
             icon: {
-              description: "",
+              description: '',
               url:
-                "http://localhost:3000/_nuxt/assets/img/SECTION_TAB/ARTICLE.png",
+                'http://localhost:3000/_nuxt/assets/img/SECTION_TAB/ARTICLE.png',
             },
             contents: [
               {
-                title: "",
-                description: "",
+                title: '',
+                description: '',
                 thumbnail: {
-                  description: "",
+                  description: '',
                   url:
-                    "http://localhost:3000/_nuxt/assets/img/SECTION_TAB/PROMOTION.png",
+                    'http://localhost:3000/_nuxt/assets/img/SECTION_TAB/PROMOTION.png',
                 },
-                linkUrl: "",
+                linkUrl: '',
               },
             ],
           },
           {
-            label: "ติดต่อเรา",
+            label: 'ติดต่อเรา',
             icon: {
-              description: "",
+              description: '',
               url:
-                "http://localhost:3000/_nuxt/assets/img/SECTION_TAB/CONTACT.png",
+                'http://localhost:3000/_nuxt/assets/img/SECTION_TAB/CONTACT.png',
             },
-            contents: [{ label: "", url: "" }],
+            contents: [{ label: '', url: '' }],
           },
         ],
       },
       jackpotSection: {
         background: {
           mobile: {
-            description: "BG-JACKPOT",
+            description: 'BG-JACKPOT',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/BG-JACKPOT.png",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/BG-JACKPOT.png',
           },
           desktop: {
-            description: "",
+            description: '',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/BG-JACKPOT.png",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/BG-JACKPOT.png',
           },
         },
         images: [
           {
-            description: "JACKPOT-1",
+            description: 'JACKPOT-1',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/JACKPOT-1.jpg",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/JACKPOT-1.jpg',
           },
           {
-            description: "JACKPOT-2",
+            description: 'JACKPOT-2',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/JACKPOT-2.jpg",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/JACKPOT-2.jpg',
           },
           {
-            description: "JACKPOT-3",
+            description: 'JACKPOT-3',
             url:
-              "http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/JACKPOT-3.jpg",
+              'http://localhost:3000/_nuxt/assets/img/SECTION_JACKPOT/JACKPOT-3.jpg',
           },
         ],
       },
       videoSection: {
-        title: "สูตรบาคาร่าออนไลน์ ทดลองฟรี",
+        title: 'สูตรบาคาร่าออนไลน์ ทดลองฟรี',
         description:
-          "สมัครเล่น บาคาร่า บนเว็บไซต์ที่ดีที่สุด เล่นง่าย มีสูตรบาคาร่าออนไลน์ แจกกฟรี! ให้แก่สมาชิกที่ทำการสมัครเล่นคาสิโนออนไลน อีกทั้งยังสามารถดาวน์โหลด บาคาร่าเล่นบนมือถือได้อีกด้วย นอกจากนี้ บนเว็บไซต์ให้บริการบาคาร่าออนไลน์แห่งนี้ ยังมีเทคนิคการเอาชนะในเกมส์บาคาร่ามากมาย",
+          'สมัครเล่น บาคาร่า บนเว็บไซต์ที่ดีที่สุด เล่นง่าย มีสูตรบาคาร่าออนไลน์ แจกกฟรี! ให้แก่สมาชิกที่ทำการสมัครเล่นคาสิโนออนไลน อีกทั้งยังสามารถดาวน์โหลด บาคาร่าเล่นบนมือถือได้อีกด้วย นอกจากนี้ บนเว็บไซต์ให้บริการบาคาร่าออนไลน์แห่งนี้ ยังมีเทคนิคการเอาชนะในเกมส์บาคาร่ามากมาย',
         videos: {
           game: {
-            background: { description: "", url: "" },
-            linkUrl: "https://www.youtube.com/embed/SIWq4RftpO0",
+            background: { description: '', url: '' },
+            linkUrl: 'https://www.youtube.com/embed/SIWq4RftpO0',
           },
           register: {
-            background: { description: "", url: "" },
-            linkUrl: "https://www.youtube.com/embed/SIWq4RftpO0",
+            background: { description: '', url: '' },
+            linkUrl: 'https://www.youtube.com/embed/SIWq4RftpO0',
           },
         },
       },
       knowledgeSection: {
-        title: "",
-        description: "",
+        title: '',
+        description: '',
       },
       gameListSection: {
         images: [
-          { description: "", url: "" },
-          { description: "", url: "" },
-          { description: "", url: "" },
-          { description: "", url: "" },
+          { description: '', url: '' },
+          { description: '', url: '' },
+          { description: '', url: '' },
+          { description: '', url: '' },
         ],
       },
       footerSection: {
         bankList: [
-          { description: "", url: "" },
-          { description: "", url: "" },
-          { description: "", url: "" },
-          { description: "", url: "" },
+          { description: '', url: '' },
+          { description: '', url: '' },
+          { description: '', url: '' },
+          { description: '', url: '' },
         ],
-        copyrightBy: "LAVABET88",
-        SupportedBy: "EXPGaming.com ",
+        copyrightBy: 'LAVABET88',
+        SupportedBy: 'EXPGaming.com ',
       },
-    };
+    }
     // store.commit("theme/SET_THEME_CONFIG", themeConfig);
     // store.commit("SET_THEME_CONFIG", themeConfig);
     // setTimeout(() => {
@@ -247,7 +241,7 @@ export default {
     //   isLoading = false
     // }, 5000)
   },
-};
+}
 </script>
 <style scoped>
 .loader {
@@ -257,7 +251,7 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 9999;
-  background: url("https://i.pinimg.com/originals/91/ae/56/91ae5683045f6dbef16b1482bade938f.png")
+  background: url('https://i.pinimg.com/originals/91/ae/56/91ae5683045f6dbef16b1482bade938f.png')
     center center no-repeat #181447;
   background-size: 100px;
 }

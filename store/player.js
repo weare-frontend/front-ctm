@@ -11,11 +11,17 @@ const mutations = {
 }
 const actions = {
   async getPlayerDetail({ commit, state, rootState }) {
-    const detail = await this.$axios.$post('/api/players-detail', {
-      agents_id: '5f587d2c578f2d8b146aa27a',
-      account_api: rootState.auth.user.player_games[0].account_api,
-    })
-    commit('SET_DETAIL', detail)
+    if (rootState.auth && rootState.auth.user.player_games.length > 0) {
+      const detail = await this.$axios.$post('/api/players-detail', {
+        agents_id: rootState.auth.user
+          ? rootState.auth.user.player_games[0].agents_id
+          : '',
+        account_api: rootState.auth.user
+          ? rootState.auth.user.player_games[0].account_api
+          : '',
+      })
+      commit('SET_DETAIL', detail)
+    }
   },
 }
 

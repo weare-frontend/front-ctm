@@ -1,20 +1,30 @@
 <template>
-<div>
+  <div>
+    <setting />
     <client-only>
-        <div class="snowflakes">
-            <div class="snowflake" v-for="(item, i) in 20" :index="i" :key="i">
-                ⁎
-            </div>
+      <div class="snowflakes">
+        <div class="snowflake" v-for="(item, i) in 20" :index="i" :key="i">
+          ⁎
         </div>
-        <page-header-login v-if="$auth.user"></page-header-login>
-        <page-header-logout v-else></page-header-logout>
-        <Nuxt />
-        <layout-menu-footer></layout-menu-footer>
+      </div>
+      <page-header-login v-if="$auth.user"></page-header-login>
+      <page-header-logout v-else></page-header-logout>
+      <Nuxt />
+      <layout-menu-footer></layout-menu-footer>
+      <!-- <comments-placeholder slot="placeholder">
+          <div style="margin: 0 auto;min-height: 100vh;display: flex;justify-content: center;align-items: center;text-align: center;">
+            <b-spinner class="mx-1" variant="light" type="grow" label="Spinning"></b-spinner>
+            <b-spinner class="mx-1" variant="danger" type="grow" label="Spinning"></b-spinner>
+            <b-spinner class="mx-1" variant="light" type="grow" label="Spinning"></b-spinner>
+            <b-spinner class="mx-1" variant="danger" type="grow" label="Spinning"></b-spinner>
+          </div>
+        </comments-placeholder> -->
     </client-only>
-</div>
+  </div>
 </template>
 
 <script>
+import Setting from '~/components/section/setting.vue'
 import HeaderLogout from '~/components/header/HeaderLogout.vue'
 import HeaderLogin from '~/components/header/HeaderLogin.vue'
 import MenuFooter from '~/components/section/section-menu-footer.vue'
@@ -23,13 +33,15 @@ export default {
     'page-header-logout': HeaderLogout,
     'page-header-login': HeaderLogin,
     'layout-menu-footer': MenuFooter,
+    Setting,
   },
   data() {
     return {}
   },
   mounted() {
-    console.log('ook')
-    this.$store.dispatch('player/getPlayerDetail')
+    if (this.$auth.user) {
+      this.$store.dispatch('player/getPlayerDetail')
+    }
   },
 }
 </script>

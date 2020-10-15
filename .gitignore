@@ -90,4 +90,3 @@ sw.*
 *.swp
 
 # Package file
-package-lock.json
