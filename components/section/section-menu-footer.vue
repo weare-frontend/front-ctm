@@ -1,96 +1,117 @@
 <template>
-<div class="footer text-center py-2" v-if="$auth.user">
+  <div class="footer text-center py-2" v-if="$auth.user">
     <div class="no-gutters">
-        <div class="col-auto mx-auto">
-            <div style="max-width: 600px; margin: 0 auto;width: 100%;" class="row justify-content-center">
-                <div class="col-3" style="padding: inherit;">
-                    <nuxt-link to="/" class="btn btn-link-default text-white">
-                        <i class="fas fa-home" aria-hidden="true"></i>
-                        <br />
-                        <span style="font-size: 9px;">หน้าแรก</span>
-                    </nuxt-link>
-                </div>
-                <div class="col-3" style="padding: inherit;">
-                    <nuxt-link to="/deposit" class="btn btn-link-default text-white">
-                        <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
-                        <br />
-                        <span style="font-size: 9px;">ฝากเงิน</span>
-                    </nuxt-link>
-                </div>
-                <div class="col-3" style="padding: inherit;">
-                    <nuxt-link to="/withdraw" class="btn btn-link-default text-white">
-                        <i class="fa fa-donate" aria-hidden="true"></i>
-                        <br />
-                        <span style="font-size: 9px;">ถอนเงิน</span>
-                    </nuxt-link>
-                </div>
-                <div class="col-3" style="padding: inherit;">
-                    <nuxt-link to="/history" class="btn btn-link-default text-white">
-                        <i class="fa fa-history" aria-hidden="true"></i>
-                        <br />
-                        <span style="font-size: 9px;">ประวัติฝาก-ถอนเงิน</span>
-                    </nuxt-link>
-                </div>
-
-            </div>
+      <div class="col-auto mx-auto">
+        <div
+          style="max-width: 600px; margin: 0 auto; width: 100%"
+          class="row justify-content-center"
+        >
+          <div class="col-3 menu-item">
+            <nuxt-link to="/" class="btn btn-link-default text-white">
+              <i class="fas fa-home" aria-hidden="true"></i>
+              <br />
+              <span>หน้าแรก</span>
+            </nuxt-link>
+          </div>
+          <div class="col-3 menu-item">
+            <nuxt-link to="/deposit" class="btn btn-link-default text-white">
+              <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
+              <br />
+              <span>ฝากเงิน</span>
+            </nuxt-link>
+          </div>
+          <div class="col-3 menu-item">
+            <nuxt-link to="/withdraw" class="btn btn-link-default text-white">
+              <i class="fa fa-donate" aria-hidden="true"></i>
+              <br />
+              <span>ถอนเงิน</span>
+            </nuxt-link>
+          </div>
+          <div class="col-3 menu-item">
+            <nuxt-link to="/history" class="btn btn-link-default text-white">
+              <i class="fa fa-history" aria-hidden="true"></i>
+              <br />
+              <span>ประวัติฝาก-ถอน</span>
+            </nuxt-link>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<div class="mobile footerLogout text-center py-2" v-else>
+  </div>
+  <div class="mobile footerLogout text-center py-2" v-else>
     <div class="pt-4 pb-4 bt-footer">
-        <nuxt-link :to="{name : 'register-id' }" class="bt-txfooter">
-            สมัครสมาชิก
-        </nuxt-link>
+      <nuxt-link :to="{ name: 'register-id' }" class="bt-txfooter">
+        สมัครสมาชิก
+      </nuxt-link>
     </div>
     <div class="pt-4 pb-4 bt-footer" v-b-modal.modal-login>
-        <!-- <nuxt-link to="/login" class="bt-txfooter"> -->
-        <a class="bt-txfooter" style="cursor: pointer;">
-            เข้าสู่ระบบ
-        </a>
-        <!-- </nuxt-link> -->
+      <a class="bt-txfooter" style="cursor: pointer">เข้าสู่ระบบ</a>
     </div>
 
-    <b-modal id="modal-login" ref="modal-login" class="my-2" centered hide-footer>
-        <template v-slot:modal-header="{ close }">
-            <h5 class="text-center w-100">ล็อคอินเข้าสู่ระบบ</h5>
-            <i class="fas fa-times" aria-hidden="true" @click="close()"></i>
-        </template>
-        <b-card border-variant="dark" header-text-variant="white" align="center">
-            <b-card-text>
-                <div class="row my-2">
-                    <div class="col-12">
-                        <b-input-group>
-                            <b-input-group-prepend is-text>
-                                <i class="fas fa-user"></i>
-                            </b-input-group-prepend>
-                            <b-form-input class="inputLogin" v-model="username" type="text" name="username" placeholder="เบอร์โทร"></b-form-input>
-                        </b-input-group>
-                    </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col-12">
-                        <b-input-group>
-                            <b-input-group-prepend is-text>
-                                <i class="fas fa-key"></i>
-                            </b-input-group-prepend>
-                            <b-form-input class="inputLogin" v-model="password" type="password" placeholder="รหัสผ่าน"></b-form-input>
-                        </b-input-group>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- <div class="col-12 mb-2">
-                        <b-button @click="registerFn()" block variant="success"><i class="fab fa-line"></i> เข้าสู่ระบบผ่านไลน์</b-button>
-                    </div> -->
-                    <div class="col-12">
-                        <b-button @click="validateFn()" block variant="dark">เข้าสู่ระบบ</b-button>
-                    </div>
-                </div>
-                <hr style="margin-bottom: 5px;">
-                <small class="text-dark" style="font-size : 10px">Copyright © 2020 Central All Rights Reserved <br>Supported by Lavagaming.com Version 0.1.1 </small>
-            </b-card-text>
-        </b-card>
+    <!-- Modal Login  -->
+    <b-modal
+      id="modal-login"
+      ref="modal-login"
+      class="my-2"
+      centered
+      hide-footer
+      no-close-on-backdrop
+    >
+      <template v-slot:modal-header="{ close }">
+        <h5 class="text-center w-100">ล็อคอินเข้าสู่ระบบ</h5>
+        <i class="fas fa-times" aria-hidden="true" @click="close()"></i>
+      </template>
+      <b-card border-variant="dark" header-text-variant="white" align="center">
+        <b-card-text>
+          <div class="row my-2">
+            <div class="col-12">
+              <b-input-group>
+                <b-input-group-prepend is-text>
+                  <i class="fas fa-user"></i>
+                </b-input-group-prepend>
+                <b-form-input
+                  class="inputLogin"
+                  v-model="username"
+                  type="text"
+                  name="username"
+                  placeholder="เบอร์โทร"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"
+                ></b-form-input>
+              </b-input-group>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col-12">
+              <b-input-group>
+                <b-input-group-prepend is-text>
+                  <i class="fas fa-key"></i>
+                </b-input-group-prepend>
+                <b-form-input
+                  class="inputLogin"
+                  v-model="password"
+                  type="password"
+                  placeholder="รหัสผ่าน"
+                ></b-form-input>
+              </b-input-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mb-2" v-if="false">
+              <b-button @click="registerWithLINE()" block variant="success"><i class="fab fa-line"></i> เข้าสู่ระบบผ่านไลน์</b-button>
+            </div>
+            <div class="col-12">
+              <b-button @click="loginFn()" block variant="dark" :disabled="!isValid || isLoading"> {{ isLoading ? loginProcessText : loginText  }} </b-button>
+            </div>
+          </div>
+          <hr style="margin-bottom: 5px" />
+          <small class="text-dark" style="font-size: 10px"
+            >Copyright © 2020 Central All Rights Reserved <br />Supported by
+            Lavagaming.com Version 0.1.1
+          </small>
+        </b-card-text>
+      </b-card>
     </b-modal>
-</div>
+  </div>
 </template>
 
 <script>
@@ -100,25 +121,14 @@ export default {
       username: '',
       password: '',
       STEP_menu: 1,
+      isLoading: false,
+      loginText: 'เข้าสู่ระบบ',
+      loginProcessText: 'กำลังเข้าสู่ระบบ...',
     }
   },
   methods: {
-    validateFn() {
-      if (this.username != '' && this.password != '') {
-        this.loginFn()
-      } else {
-        this.$toast.global.error({
-          message: 'เข้าสู่ระบบไม่สำเร็จ กรุณากรอกข้อมูลให้ครบ',
-        })
-      }
-    },
-    lineConnectFn() {
-      alert('line connection !!')
-    },
-    registerFn() {
-      alert('register !!')
-    },
     loginFn() {
+      this.isLoading = true
       this.$auth
         .loginWith('local', {
           data: {
@@ -128,6 +138,7 @@ export default {
         })
         .then(() => {
           this.$store.dispatch('player/getPlayerDetail')
+          this.resetForm()
           this.$router.push({
             name: 'index',
           })
@@ -143,17 +154,26 @@ export default {
           }
           this.$toast.global.error({ message })
         })
+        .finally(() => (this.isLoading = false))
+    },
+    resetForm() {
+      this.username = ''
+      this.password = ''
+    },
+  },
+  computed: {
+    isValid() {
+      return this.username.length >= 10 && this.password.length >= 4
     },
   },
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .menuFooter-img {
   max-width: 30px;
   max-height: auto;
 }
-
 .footerLogout {
   width: 100%;
   height: 60px;
@@ -207,5 +227,17 @@ a.bt-txfooter {
   -moz-backdrop-filter: saturate(125%) blur(10px);
   -ms-backdrop-filter: saturate(125%) blur(10px);
   backdrop-filter: saturate(125%) blur(10px);
+}
+.menu-item {
+  span {
+    font-size: 0.8rem;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  .menu-item {
+    span {
+      font-size: 0.6rem;
+    }
+  }
 }
 </style>

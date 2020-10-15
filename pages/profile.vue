@@ -33,35 +33,38 @@
                 <div class="container">
                     <div class="col-10 col-md-12">
                         <div class="row text-white" style="background:rgba(0,0,0,0.2);border-radius: 6px; justify-content: center;">
-                            <div class="col-md-1 text-center">
-                              <img :src="require(`@/assets/img/IMG_LOGOBANK/${$auth.user.player_bank.bank_short_name}.png`)" style="max-width:40px" alt="" srcset="" class="img-fluid rounded">
+                            <div class="col-md-2 text-center">
+                              <icon-bank :short-name="$auth.user.player_bank.bank_short_name" class="my-md-0 my-2" width="100" />
                             </div>
-                            <div class="col-md-5 text-left">
+                            <div class="col-md-5 text-left d-flex align-items-center">
                               <div>
-                                  <small><b>ชื่อบัญชี :</b></small>
-                                  <small>{{$auth.user.detail.fname}}</small>
-                                  <small>{{$auth.user.detail.lname}}</small>
-                              </div>
-                              <div>
-                                <small><b>เลขที่บัญชี :</b></small>
-                                <small>{{$auth.user.player_bank.bank_account}}</small>
-                              </div>
-                              <div v-if="$auth.user.refer_code">
-                                <small><b>รหัสผู้เชิญชวน :</b></small>
-                                <small>{{$auth.user.refer_code}}</small>
-                            </div>
-                            </div>
-                            <div class="col-md-6 text-left">
-                              <div>
-                                <small><b>ธนาคาร :</b></small>
-                                <small>{{$auth.user.player_bank.bank_name}}</small>
-                              </div>
-                              <div>
-                                <small><b>รหัส Pincode :</b></small>
-                                <small>{{$auth.user.pincode}}</small>
+                                <div>
+                                    <small><b>ชื่อบัญชี :</b></small>
+                                    <small>{{$auth.user.detail.fname}}</small>
+                                    <small>{{$auth.user.detail.lname}}</small>
+                                </div>
+                                <div>
+                                  <small><b>เลขที่บัญชี :</b></small>
+                                  <small>{{$auth.user.player_bank.bank_account}}</small>
+                                </div>
+                                <div v-if="$auth.user.refer_code">
+                                  <small><b>รหัสผู้เชิญชวน :</b></small>
+                                  <small>{{$auth.user.refer_code}}</small>
+                                </div>
                               </div>
                             </div>
-                           
+                            <div class="col-md-5 text-left d-flex align-items-center">
+                              <div>
+                                <div>
+                                  <small><b>ธนาคาร :</b></small>
+                                  <small>{{$auth.user.player_bank.bank_name}}</small>
+                                </div>
+                                <div>
+                                  <small><b>รหัส Pincode :</b></small>
+                                  <small>{{$auth.user.pincode}}</small>
+                                </div>
+                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,8 +140,12 @@
 </template>
 
 <script>
+import IconBank from '@/components/global/IconBank'
 export default {
   layout: 'defaultPage',
+  components: {
+    IconBank,
+  },
   head() {
     return {
       title: 'Profile',
@@ -147,11 +154,13 @@ export default {
   data: () => ({
     isLoading: null,
     password: '',
+    validator: {
+      password:
+        'รหัสผ่านต้องมีตั้งแต่ 6-12 ตัว และมีภาษาอังกฤษ พิมพ์เล็กและใหญ่ เช่น Abc123',
+    },
   }),
-
   methods: {
     resetPassword: async function () {
-      this.$refs['modal-password'].hide()
       if (
         !!this.$refs.password.value.match(/[a-z]/g) &&
         !!this.$refs.password.value.match(/[A-Z]/g) &&
@@ -183,8 +192,7 @@ export default {
           })
       } else {
         this.$toast.global.error({
-          message:
-            'รหัสผ่านต้องมีตั้งแต่ 6-12 ตัว และมีภาษาอังกฤษ พิมพ์เล็กและใหญ่ เช่น Abc123',
+          message: this.validator.password,
         })
         this.$refs.password.focus()
       }

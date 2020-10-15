@@ -1,31 +1,36 @@
 <template>
 <div>
+    <!-- Banner PC   -->
     <div class="desktop row align-items-center mx-0" :style="'width:100%; overflow:hidden; background-image:url('+`${require(`@/assets/img/SECTION_BANNER/BG_SECTION-1-DESKTOP.jpg`)}`+');background-size: contain; background-position: bottom center;background-size: auto;background-repeat: no-repeat;'">
         <div class="col-12 text-center">
             <div class="col-12">
                 <br><br><br><br>
             </div>
             <div class="col-12">
-                <b-img-lazy  class="icon-intab-ani"  :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png`)" alt="img-header" style="max-width: 100%;"></b-img-lazy>
+                <img class="icon-intab-ani" :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-DESKTOP.png`)" alt="img-header" style="max-width: 100%;">
             </div>
             <div class="col-12" style="margin-bottom: 15px;" data-aos="fade-up">
-                <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png`)" fluid alt="img-header"></b-img-lazy>
+                <img class="img-fluid" :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png`)" fluid alt="img-header">
             </div>
         </div>
     </div>
+
+    <!-- Banner Mobile -->
     <div class="mobile row align-items-center mx-0" :style="'width:100%; overflow:hidden; background-image:url('+`${require(`@/assets/img/SECTION_BANNER/BG_SECTION-1-MOBILE.jpg`)}`+');background-size: contain; background-position: bottom center;background-size: cover;background-repeat: no-repeat;'">
         <div class="col-12 text-center">
             <div class="col-12">
                 <br><br><br><br>
             </div>
             <div class="col-12">
-                <b-img-lazy  class="icon-intab-ani" :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png`)"  alt="img-header" style="max-width: 100%;"></b-img-lazy>
+                <img  class="icon-intab-ani" :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-MOBILE.png`)"  alt="img-header" style="max-width: 100%;">
             </div>
             <div class="col-12" style="margin-bottom: 15px;" data-aos="fade-up">
-                <b-img-lazy :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png`)"  fluid alt="img-header"></b-img-lazy>
+                <img class="img-fluid"  :src="require(`@/assets/img/SECTION_BANNER/IMG_SECTION-1-1.png`)"  fluid alt="img-header">
             </div>
         </div>
     </div>
+    
+    <!-- Login, Register & Start Game -->
     <div class="text-center text-white manu-button" v-if="!this.$auth.user">
         <h1 class="py-3" style="font-weight: 300;">ครบจบในเว็บเดียว</h1>
         <span v-b-modal.modal-login style="cursor : pointer;">
@@ -51,6 +56,7 @@
         </div>
     </div>
 
+    <!-- modal launch game -->
     <b-modal id="modal-launch" ref="modal-launch" class="my-2" centered hide-footer>
         <template v-slot:modal-header="{ close }">
             <h5 class="text-center w-100">เข้าสู่เว็บเดิมพัน</h5>
@@ -59,7 +65,7 @@
         <!-- <div class="text-center mb-2" v-for="(item,index) in gameArray" :key="index">
             <b-card border-variant="dark" header-text-variant="white" style="background-color: #000;">
                 <b-card-text>
-                 
+                
                     <a class="d-none" target="_blank" :ref="`launcher_${item.prefix}`"></a>
                     <span style="cursor : pointer;" @click="launcherGame(item.prefix)">
                         <b-img-lazy :src="require(`~/assets/img/IMG_LOGOGAME/${item.prefix}.png`)" style="max-width: 190px; height: 100px"></b-img-lazy>
@@ -67,7 +73,7 @@
                 </b-card-text>
             </b-card>
         </div> -->
-         <div class="text-center mb-2">
+        <div class="text-center mb-2">
             <b-card border-variant="dark" header-text-variant="white" style="background-color: #000;">
                 <b-card-text @click="submitGame">
                   <form
@@ -89,7 +95,7 @@
             </b-card>
         </div>
     </b-modal>
-</div>
+  </div>
 </template>
 
 <script>
@@ -105,15 +111,19 @@ export default {
   },
   methods: {
     async submitGame() {
-      // this.$refs.formGame.submit()
-      try {
-        await this.$axios.$post('/api/launchgame', {
-          username: 'lava178164460',
-          password: 'Aa1234',
+      this.$axios
+        .$post('/api/launchgame', {
+          agents_id: this.$auth.user.player_games[0].agents_id,
+          account_api: this.$auth.user.player_games[0].account_api,
         })
-      } catch (error) {
-        console.log(error)
-      }
+        .then((res) => {
+          if (res.success) {
+            window.open(res.data.url, '_blank')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     getGames: async function () {
       try {

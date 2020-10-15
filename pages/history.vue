@@ -21,8 +21,8 @@
                                         <div class="col-6 text-white text-right pt-2">
                                             <div class="form-group">
                                                 <span class="text-white">{{data.item.money | currency}}</span>
-                                                <div  :class="withdrawStatus(data.item.status).class">
-                                                    <small> {{withdrawStatus(data.item.status).text}}</small>
+                                                <div  :class="transactionStatus(data.item.status).class">
+                                                    <small> {{transactionStatus(data.item.status).text}}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,7 +43,7 @@
                         <div v-if="withdrawData.length > 0">
                             <b-table id="my-table" :items="withdrawData" :fields="fields" :per-page="perPage"  small class="text-white" borderless>
                                 <template v-slot:cell(index)="data">
-                                    <div class="row" style="margin:5px 0;border-radius: 10px; border: solid 1px #666;">
+                                    <div  class="row" style="margin:5px 0;border-radius: 10px; border: solid 1px #666;">
                                         <div class="col-6 pt-2 text-left">
                                             <div class="form-group">
                                                 <span class="text-white">ถอนเงิน</span>
@@ -54,9 +54,9 @@
                                         </div>
                                         <div class="col-6 text-white text-right pt-2">
                                             <div class="form-group">
-                                                <span class="text-white">{{data.item.money | currency}}</span>
-                                                <div :class="withdrawStatus(data.item.accept_status).class">
-                                                    <small> {{withdrawStatus(data.item.accept_status).text}}</small>
+                                                <span class="text-white">{{ (data.item.accept_status === 2 ? data.item.withdraw : data.item.money) | currency }}</span>
+                                                <div :class="transactionStatus(data.item.accept_status).class">
+                                                    <small> {{transactionStatus(data.item.accept_status).text}}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -82,10 +82,15 @@
 
 <script>
 const pageLimit = process.env.PAGE_LIMIT
+const API_URL = {
+  withdraw: '/api/players-withdraw?$sort[createdAt]=-1&accept_status[$ne]=0',
+  deposit: '/api/players-deposit-history?$sort[createdAt]=-1',
+}
 export default {
   layout: 'defaultPage',
   data() {
     return {
+      baseURL: {},
       perPage: pageLimit,
       depositCurrentPage: 1,
       withdrawCurrentPage: 1,
@@ -101,13 +106,13 @@ export default {
   async asyncData({ $axios, route }) {
     let withdraw, deposit
     try {
-      deposit = await $axios.$get('/api/players-deposit-history', {
+      deposit = await $axios.$get(API_URL.deposit, {
         params: {
           $limit: pageLimit,
           $skip: 0,
         },
       })
-      withdraw = await $axios.$get('/api/players-withdraw', {
+      withdraw = await $axios.$get(API_URL.withdraw, {
         params: {
           $limit: pageLimit,
           $skip: 0,
@@ -129,10 +134,13 @@ export default {
     fetchWithdraw(page) {
       page = (page - 1) * this.perPage
       this.$axios
-        .$get(`/api/players-withdraw`, {
+        .$get(API_URL.withdraw, {
           params: {
             $limit: this.perPage,
             $skip: page,
+            $sort: {
+              createdAt: -1,
+            },
           },
         })
         .then((res) => (this.withdraw = res))
@@ -140,15 +148,18 @@ export default {
     fetchDeposit(page) {
       page = (page - 1) * this.perPage
       this.$axios
-        .$get(`/api/players-deposit-history`, {
+        .$get(API_URL.deposit, {
           params: {
             $limit: this.perPage,
             $skip: page,
+            $sort: {
+              createdAt: -1,
+            },
           },
         })
         .then((res) => (this.deposit = res))
     },
-    withdrawStatus(acceptStatus) {
+    transactionStatus(acceptStatus) {
       let status = {
         text: '',
         class: '',
@@ -156,7 +167,7 @@ export default {
       switch (acceptStatus) {
         case 0:
           status = {
-            text: 'ยกเลิก',
+            text: 'ไม่อนุมัติ',
             class: 'text-danger',
           }
           break
@@ -193,7 +204,6 @@ export default {
       return this.deposit ? this.deposit.data : []
     },
     withdrawData() {
-      console.log(this.withdraw)
       return this.withdraw ? this.withdraw.data : []
     },
     withdrawRows() {
