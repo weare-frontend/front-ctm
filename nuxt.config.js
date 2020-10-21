@@ -181,7 +181,8 @@ module.exports = {
   //   API: process.env.API
   // },
   server: {
-    port: process.env.PORT || 3000, // default: 3000
-    host: process.env.HOST || 'localhost', // default: localhost
+    port: process.env.PORT || 8080, // default: 3000
+    // host: process.env.HOST || 'localhost', // default: localhost
+    host: '0.0.0.0', // default: localhost
   },
 }
